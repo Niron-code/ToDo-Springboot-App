@@ -31,4 +31,18 @@ public class ToDoService {
     public void createToDo(ToDo toDo) {
         todos.add(toDo);
     }
+
+    public void updateToDo(Integer id, ToDo toDo) {
+        for(int i=0; i<todos.size(); i++){
+            ToDo t = todos.get(i); //getting and assigning each object to t
+            if(t.getId().equals(id)){
+              todos.set(i, toDo);
+              return;
+            }
+        }
+    }
+
+    public void deleteToDo(Integer id) {
+        todos.removeIf(t ->t.getId().equals(id));
+    }
 }
