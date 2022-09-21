@@ -1,48 +1,37 @@
 package com.codinativ.todolist.todo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class ToDoService {
 
-    //Variable declaration
-    private List<ToDo> todos = new ArrayList<>(
-            Arrays.asList(
-                    new ToDo(1, "Task_1","Summary_1","desc_1"),
-                    new ToDo(2, "Task_2","Summary_2","desc_2"),
-                    new ToDo(3, "Task_3","Summary_3","desc_3"),
-                    new ToDo(4, "Task_4","Summary_4","desc_4")
-            )
-    );
+    @Autowired
+    private ToDoRepository toDoRepository;
 
     //Method Implementation
     public List<ToDo> getAllToDos(){
+        List<ToDo> todos = new ArrayList<>();
+        toDoRepository.findAll().forEach(todos::add);
         return todos;
     }
 
     public ToDo getToDo(Integer id) {
-        return todos.stream().filter(t-> t.getId().equals(id)).findFirst().get();
+        return toDoRepository.findById(id).get();
     }
 
     public void createToDo(ToDo toDo) {
-        todos.add(toDo);
+        toDoRepository.save(toDo);
     }
 
     public void updateToDo(Integer id, ToDo toDo) {
-        for(int i=0; i<todos.size(); i++){
-            ToDo t = todos.get(i); //getting and assigning each object to t
-            if(t.getId().equals(id)){
-              todos.set(i, toDo);
-              return;
-            }
-        }
+        toDoRepository.save(toDo);
     }
 
     public void deleteToDo(Integer id) {
-        todos.removeIf(t ->t.getId().equals(id));
+        toDoRepository.deleteById(id);
     }
 }
